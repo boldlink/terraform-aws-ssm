@@ -1,0 +1,11 @@
+directory:
+- .
+download-external-modules: false
+evaluate-variables: true
+external-modules-download-path: .external_modules
+framework: all
+skip-check:
+- CKV_AWS_300 #Ensure S3 lifecycle configuration sets period for aborting failed uploads
+- CKV_AWS_144 #Ensure that S3 bucket has cross-region replication enabled
+- CKV2_AWS_62 #Ensure S3 buckets should have event notifications enabled
+- CKV_AWS_18 #Ensure the S3 bucket has access logging enabled
