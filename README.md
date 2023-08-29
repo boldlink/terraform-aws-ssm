@@ -90,7 +90,7 @@ module "miniumum" {
 ```
 
 ## Using the Document in Session
-To use this Session document in a session initiate a session with the following cli command (ensure ssm plugin is installed in your system first). See [here]() for more details on how to install.
+To use this Session document in a session initiate a session with the following cli command (ensure ssm plugin is installed in your system first). See [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html) for more details on how to install.
 ```console
 aws ssm start-session \
     --target "<instance_id_here>"
