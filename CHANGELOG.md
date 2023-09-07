@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- feat: Add support for other types of documents dynamically
+- feat: showcase usage of other types of documents in the complete example
 - feat: Add parameter store
 - feat: Show in complete example the usage of run commands
 - feat: Add more systems manager feature like `Patch Manager`, `Maintenance Window` among others

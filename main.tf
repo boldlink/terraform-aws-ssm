@@ -1,69 +1,3 @@
-## Run commands on linux instances managed by ssm
-resource "aws_ssm_document" "linux_run_command" {
-  count         = var.run_linux_command ? 1 : 0
-  name          = "${var.run_command_name}-linux"
-  document_type = "Command"
-  content = jsonencode({
-    schemaVersion = "1.2",
-    description   = "Run commands or scripts on ssm managed linux instances",
-    parameters    = {},
-    runtimeConfig = {
-      "aws:runShellScript" = {
-        properties = [
-          {
-            id         = "0.aws:runShellScript",
-            runCommand = [var.linux_commands]
-          }
-        ]
-      }
-    }
-  })
-}
-
-resource "aws_ssm_association" "linux_run_command" {
-  count            = var.run_linux_command ? 1 : 0
-  name             = aws_ssm_document.linux_run_command[0].name
-  document_version = "$LATEST"
-  association_name = var.linux_association_name
-  targets {
-    key    = "InstanceIds"
-    values = var.linux_targets
-  }
-}
-
-## Run commands on windows instances managed by ssm
-resource "aws_ssm_document" "windows_run_command" {
-  count         = var.run_windows_command ? 1 : 0
-  name          = "${var.run_command_name}-windows"
-  document_type = "Command"
-  content = jsonencode({
-    schemaVersion = "1.2",
-    description   = "Run commands or scripts on ssm managed windows instances",
-    parameters    = {},
-    runtimeConfig = {
-      "aws:runShellScript" = {
-        properties = [
-          {
-            id         = "0.aws:runShellScript",
-            runCommand = [var.windows_commands]
-          }
-        ]
-      }
-    }
-  })
-}
-
-resource "aws_ssm_association" "windows_run_command" {
-  count            = var.run_windows_command ? 1 : 0
-  name             = aws_ssm_document.windows_run_command[0].name
-  document_version = "$LATEST"
-  association_name = var.windows_association_name
-  targets {
-    key    = "InstanceIds"
-    values = var.windows_targets
-  }
-}
-
 resource "aws_kms_key" "sessionkms" {
   count                   = var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled ? 1 : 0
   description             = "AWS CMK for encrypting ssm session"
@@ -87,7 +21,32 @@ resource "aws_cloudwatch_log_group" "ssm_log_group" {
   tags              = var.tags
 }
 
+### custom document
+resource "aws_ssm_document" "custom" {
+  count           = var.create_custom_document ? 1 : 0
+  name            = var.document_name
+  document_type   = var.document_type
+  document_format = var.document_format
+  tags            = var.tags
+  content         = var.content
+}
 
+resource "aws_ssm_association" "main" {
+  count            = var.association_name != null ? 1 : 0
+  name             = aws_ssm_document.custom[0].name
+  document_version = try(var.document_version, "$LATEST")
+  association_name = var.association_name
+
+  dynamic "targets" {
+    for_each = var.targets
+    content {
+      key    = try(targets.value.key, null)
+      values = try(targets.value.values, null)
+    }
+  }
+}
+
+## Session preferences
 resource "aws_ssm_document" "session_preferences" {
   count           = var.create_session_preferences ? 1 : 0
   name            = var.name

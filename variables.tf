@@ -3,65 +3,58 @@ variable "name" {
   description = "The name of the stack"
 }
 
+variable "document_name" {
+  type        = string
+  description = "The name of the custom document"
+  default     = null
+}
+
+variable "document_type" {
+  type        = string
+  description = "The type of the document. Valid document types include: `Automation`, `Command`, `Package`, `Policy`, and `Session`"
+  default     = null
+}
+
+variable "document_format" {
+  type        = string
+  description = "The format of the document. Valid document types include: `JSON` and `YAML`"
+  default     = "JSON"
+}
+
+variable "content" {
+  type        = string
+  description = "The JSON or YAML content of the document."
+  default     = ""
+}
+
+variable "create_custom_document" {
+  type        = bool
+  description = "Specify whether to create ssm document with custom settings"
+  default     = false
+}
+
 variable "s3_key_prefix" {
   type        = string
   description = "Specify S3 key prefix for the logs"
   default     = ""
 }
 
-variable "run_linux_command" {
-  type        = bool
-  description = "Specify whether to run command(s) on linux instances"
-  default     = false
-}
-
-variable "run_windows_command" {
-  type        = bool
-  description = "Specify whether to run command(s) on windows instances"
-  default     = false
-}
-
-variable "linux_commands" {
+variable "association_name" {
   type        = string
-  description = "Specify the content of the script or command. If this is a script, it would be easier to use data source"
+  description = "The descriptive name for the association."
   default     = null
 }
 
-
-variable "windows_commands" {
+variable "document_version" {
   type        = string
-  description = "Specify the content of the script or command. If this is a script, it would be easier to use data source"
+  description = "The document version you want to associate with the target(s). Can be a specific version or the default version."
   default     = null
 }
 
-variable "linux_association_name" {
-  type        = string
-  description = "The descriptive name for the association."
-  default     = "linux-association"
-}
-
-variable "windows_association_name" {
-  type        = string
-  description = "The descriptive name for the association."
-  default     = "windows-association"
-}
-
-variable "linux_targets" {
-  type        = list(string)
-  description = "List of instance IDs for the target"
+variable "targets" {
+  type        = list(any)
+  description = "The configuration for the targets to associate the Document with. As of this version AWS currently supports a maximum of 5 targets."
   default     = []
-}
-
-variable "windows_targets" {
-  type        = list(string)
-  description = "List of instance IDs for the windows target"
-  default     = []
-}
-
-variable "run_command_name" {
-  type        = string
-  description = "Name of the run command"
-  default     = "RunCommandonLinux"
 }
 
 variable "run_as_enabled" {
