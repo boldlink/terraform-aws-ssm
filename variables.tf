@@ -144,7 +144,7 @@ variable "windows_shell_profile" {
 variable "kms_key_id" {
   type        = string
   description = "Provide a KMS Key ID for AWS CMK key not created by this module"
-  default     = null
+  default     = ""
 }
 
 variable "enable_key_rotation" {

@@ -17,7 +17,7 @@ resource "aws_cloudwatch_log_group" "ssm_log_group" {
   count             = var.send_logs_to_cloudwatch ? 1 : 0
   name              = "/aws/ssm/${var.name}"
   retention_in_days = var.retention_in_days
-  kms_key_id        = var.cloudwatch_encryption_enabled ? aws_kms_key.sessionkms[0].arn : null
+  kms_key_id        = var.cloudwatch_encryption_enabled ? try(aws_kms_key.sessionkms[0].arn, null) : null
   tags              = var.tags
 }
 
@@ -58,13 +58,13 @@ resource "aws_ssm_document" "session_preferences" {
     "description" : "Document to hold regional settings for Session Manager",
     "sessionType" : "Standard_Stream",
     "inputs" : {
-      "s3BucketName" : var.send_logs_to_s3 && var.session_bucket == "" ? aws_s3_bucket.session_logs_bucket[0].id : var.session_bucket,
+      "s3BucketName" : local.log_bucket_name,
       "s3KeyPrefix" : var.s3_key_prefix,
       "s3EncryptionEnabled" : var.s3_encryption_enabled,
-      "cloudWatchLogGroupName" : var.send_logs_to_cloudwatch ? aws_cloudwatch_log_group.ssm_log_group[0].name : "",
+      "cloudWatchLogGroupName" : local.cloudwatch_log_group_name,
       "cloudWatchEncryptionEnabled" : var.cloudwatch_encryption_enabled,
       "cloudWatchStreamingEnabled" : var.cloudwatch_streaming_enabled,
-      "kmsKeyId" : var.kms_key_id == "" && var.encrypt_session ? aws_kms_key.sessionkms[0].key_id : var.kms_key_id,
+      "kmsKeyId" : local.kms_key,
       "runAsEnabled" : var.run_as_enabled,
       "runAsDefaultUser" : var.run_as_default_user,
       "idleSessionTimeout" : var.idle_session_timeout,
@@ -129,7 +129,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "session_logs_buck
 
   rule {
     apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.sessionkms[0].arn
+      kms_master_key_id = try(aws_kms_key.sessionkms[0].arn, null)
       sse_algorithm     = "aws:kms"
     }
   }
