@@ -1,5 +1,5 @@
 resource "aws_kms_key" "sessionkms" {
-  count                   = var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled ? 1 : 0
+  count                   = var.kms_key_id == "" && (var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled) ? 1 : 0
   description             = "AWS CMK for encrypting ssm session"
   deletion_window_in_days = var.key_deletion_window_in_days
   enable_key_rotation     = var.enable_key_rotation
@@ -8,7 +8,7 @@ resource "aws_kms_key" "sessionkms" {
 }
 
 resource "aws_kms_alias" "sessionkms" {
-  count         = var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled ? 1 : 0
+  count         = var.kms_key_id == "" && (var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled) ? 1 : 0
   name          = "alias/${var.name}"
   target_key_id = aws_kms_key.sessionkms[0].key_id
 }
@@ -64,7 +64,7 @@ resource "aws_ssm_document" "session_preferences" {
       "cloudWatchLogGroupName" : var.send_logs_to_cloudwatch ? aws_cloudwatch_log_group.ssm_log_group[0].name : "",
       "cloudWatchEncryptionEnabled" : var.cloudwatch_encryption_enabled,
       "cloudWatchStreamingEnabled" : var.cloudwatch_streaming_enabled,
-      "kmsKeyId" : var.encrypt_session ? aws_kms_key.sessionkms[0].key_id : "",
+      "kmsKeyId" : var.kms_key_id == "" && var.encrypt_session ? aws_kms_key.sessionkms[0].key_id : var.kms_key_id,
       "runAsEnabled" : var.run_as_enabled,
       "runAsDefaultUser" : var.run_as_default_user,
       "idleSessionTimeout" : var.idle_session_timeout,
