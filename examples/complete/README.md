@@ -45,7 +45,7 @@ No resources.
 | <a name="input_linux_shell_profile"></a> [linux\_shell\_profile](#input\_linux\_shell\_profile) | The shell preferences, environment variables, working directories, and commands you specify for sessions on Linux managed nodes. | `string` | `"sudo su"` | no |
 | <a name="input_logs_expiration_days"></a> [logs\_expiration\_days](#input\_logs\_expiration\_days) | Number of days it takes for logs to expire in s3 bucket | `number` | `45` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the stack | `string` | `"Complete-SessionExample"` | no |
-| <a name="input_s3_key_prefix"></a> [s3\_key\_prefix](#input\_s3\_key\_prefix) | Specify S3 key prefix for the logs | `string` | `"Experimental"` | no |
+| <a name="input_s3_key_prefix"></a> [s3\_key\_prefix](#input\_s3\_key\_prefix) | Specify S3 key prefix for the logs | `string` | `"ssm/logs"` | no |
 | <a name="input_send_logs_to_cloudwatch"></a> [send\_logs\_to\_cloudwatch](#input\_send\_logs\_to\_cloudwatch) | Whether to send logs to cloudwatch | `bool` | `true` | no |
 | <a name="input_send_logs_to_s3"></a> [send\_logs\_to\_s3](#input\_send\_logs\_to\_s3) | Whether to send session logs to s3 bucket | `bool` | `true` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to the resource. Note that these tags apply to the instance and not block storage devices. | `map(string)` | <pre>{<br>  "Department": "DevOps",<br>  "Environment": "example",<br>  "InstanceScheduler": true,<br>  "LayerId": "Example",<br>  "LayerName": "Example",<br>  "Owner": "Boldlink",<br>  "Project": "Examples",<br>  "user::CostCenter": "terraform-registry"<br>}</pre> | no |

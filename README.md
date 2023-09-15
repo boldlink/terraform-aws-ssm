@@ -12,29 +12,23 @@
 [<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
 
 # Terraform AWS Systems Manager module
-This module simplifies the process of creating AWS Systems Manager sessions, offering options to enable session encryption, CloudWatch Logs encryption and S3 Logs encryption. The module also assists in generating run command documents for both Linux and Windows instances. This assists one to execute commands simultaneously across instances managed by AWS Systems Manager.
+* This module allows you to create a custom session document with the following definitions:
+   * Cloudwatch Logs w/encryption.
+   * S3 Logs bucket w/encryption.
+   * Session KMS key for encryption at rest.
+* With this module you can also create custom documents to execute on your instances with SSM Agent enabled.
 
-## Advantages of Using this Module
-- **Ease of Use:** The module provides straightforward examples.
-- **Simplified Resource Setup:** The module eliminates complexities associated with configuring the essential resources required to run AWS Systems Manager sessions.
-- **Best Practice Compliance:** The module adheres to AWS best practices, using tools like Checkov to scan for potential security vulnerabilities.
+**NOTE:**
+* You can change the default AWS SSM session `SSM-SessionManagerRunShell` by importing it first to your state and then apply the module changes.
+* We highly recommend you to condition which session document for SSM Session you allow users to use, this will restrict users to start the SSM Sessions using their own custom documents or the default document (SSM-SessionManagerRunShell) otherwise you will make whatever session document you configured redundant, see the AWS documentation for this [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/getting-started-sessiondocumentaccesscheck.html).
 
 Examples available [`here`](./examples)
 
 ## Permissions Required by EC2 instance profile
-The following permissions are required by instance profile to dycrypt session using the KMS key created by the module:
+The following KMS permissions are required by instance profile to decrypt session using the KMS key created by the module:
 ```console
-{
-    "Effect": "Allow",
-    "Principal": {
-        "AWS": "*"
-    },
-    "Action": [
-        "kms:Decrypt",
-        "kms:GenerateDataKey"
-    ],
-    "Resource": "*"
-}
+ "kms:Decrypt",
+ "kms:GenerateDataKey"
 ```
 
 ## Permissions Required by IAM USER
@@ -83,23 +77,21 @@ In addition to having the required permissions for ssm actions, the IAM user usi
 ```hcl
 module "miniumum" {
   source                     = "boldlink/ssm/aws"
-  version                    = "<provider_version_here>"
+  version                    = "<latest_module_version>"
   name                       = var.name
+  encrypt_session            = true
   create_session_preferences = var.create_session_preferences
 }
 ```
 
-## Using the Document in Session
+## Using the Custom Document In Your SSM Session
 To use this Session document in a session initiate a session with the following cli command (ensure ssm plugin is installed in your system first). See [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html) for more details on how to install.
 ```console
 aws ssm start-session \
     --target "<instance_id_here>"
     --document-name "<name_of_created_session_document>"
 ```
-**Note:** The `encrypt_session` option is set to `true` by default hence the session will be encrypted. You can turn it off by changing the value to `false`.
-
-## Restricting Users to use Session Document at Account Level
-- SCPs can be used to ensure that IAM users use only the custom document created here for ssm sessions
+**Note:** The `encrypt_session` option is set to `false` by default hence the session will not be encrypted. You can turn enable it by changing the value to `true`.
 
 ## Documentation
 
@@ -119,25 +111,20 @@ aws ssm start-session \
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.15.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.17.0 |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_session_logs_bucket"></a> [session\_logs\_bucket](#module\_session\_logs\_bucket) | boldlink/s3/aws | 2.3.0 |
+| <a name="module_sessionkms"></a> [sessionkms](#module\_sessionkms) | boldlink/kms/aws | 1.1.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [aws_cloudwatch_log_group.ssm_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_kms_alias.sessionkms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_key.sessionkms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
-| [aws_s3_bucket.session_logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket_lifecycle_configuration.session_logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
-| [aws_s3_bucket_policy.bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
-| [aws_s3_bucket_public_access_block.session_logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
-| [aws_s3_bucket_server_side_encryption_configuration.session_logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
-| [aws_s3_bucket_versioning.session_logs_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_ssm_association.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_association) | resource |
 | [aws_ssm_document.custom](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document) | resource |
 | [aws_ssm_document.session_preferences](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document) | resource |
@@ -161,10 +148,8 @@ No modules.
 | <a name="input_document_name"></a> [document\_name](#input\_document\_name) | The name of the custom document | `string` | `null` | no |
 | <a name="input_document_type"></a> [document\_type](#input\_document\_type) | The type of the document. Valid document types include: `Automation`, `Command`, `Package`, `Policy`, and `Session` | `string` | `null` | no |
 | <a name="input_document_version"></a> [document\_version](#input\_document\_version) | The document version you want to associate with the target(s). Can be a specific version or the default version. | `string` | `null` | no |
-| <a name="input_enable_key_rotation"></a> [enable\_key\_rotation](#input\_enable\_key\_rotation) | Choose whether to enable key rotation | `bool` | `true` | no |
-| <a name="input_encrypt_session"></a> [encrypt\_session](#input\_encrypt\_session) | Whether to encrypt the session using KMS | `bool` | `true` | no |
+| <a name="input_encrypt_session"></a> [encrypt\_session](#input\_encrypt\_session) | Whether to encrypt the session using KMS | `bool` | `false` | no |
 | <a name="input_idle_session_timeout"></a> [idle\_session\_timeout](#input\_idle\_session\_timeout) | The amount of time of inactivity you want to allow before a session ends. This input is measured in minutes. Valid values: 1-60 | `number` | `20` | no |
-| <a name="input_key_deletion_window_in_days"></a> [key\_deletion\_window\_in\_days](#input\_key\_deletion\_window\_in\_days) | The number of days before the key is deleted | `number` | `7` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | Provide a KMS Key ID for AWS CMK key not created by this module | `string` | `""` | no |
 | <a name="input_linux_shell_profile"></a> [linux\_shell\_profile](#input\_linux\_shell\_profile) | The shell preferences, environment variables, working directories, and commands you specify for sessions on Linux managed nodes. | `string` | `""` | no |
 | <a name="input_logs_expiration_days"></a> [logs\_expiration\_days](#input\_logs\_expiration\_days) | The number of days it will take for logs stored in S3 to expire | `number` | `30` | no |

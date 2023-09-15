@@ -126,7 +126,7 @@ variable "retention_in_days" {
 variable "encrypt_session" {
   type        = bool
   description = "Whether to encrypt the session using KMS"
-  default     = true
+  default     = false
 }
 
 variable "linux_shell_profile" {
@@ -147,22 +147,10 @@ variable "kms_key_id" {
   default     = ""
 }
 
-variable "enable_key_rotation" {
-  type        = bool
-  description = "Choose whether to enable key rotation"
-  default     = true
-}
-
 variable "tags" {
   type        = map(string)
   description = "Map of tags to assign to the resources."
   default     = {}
-}
-
-variable "key_deletion_window_in_days" {
-  type        = number
-  description = "The number of days before the key is deleted"
-  default     = 7
 }
 
 variable "logs_expiration_days" {

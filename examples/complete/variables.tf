@@ -43,7 +43,7 @@ variable "logs_expiration_days" {
 variable "s3_key_prefix" {
   type        = string
   description = "Specify S3 key prefix for the logs"
-  default     = "Experimental"
+  default     = "ssm/logs"
 }
 
 variable "tags" {
