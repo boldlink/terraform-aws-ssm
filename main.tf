@@ -4,7 +4,7 @@ module "sessionkms" {
   version          = "1.1.0"
   description      = "AWS CMK for encrypting ssm session"
   create_kms_alias = true
-  kms_policy       = local.kms_policy
+  kms_policy       = data.aws_iam_policy_document.kms_policy.json
   alias_name       = "alias/${var.name}-key-alias"
   tags             = var.tags
 }

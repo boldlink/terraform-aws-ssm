@@ -147,6 +147,12 @@ variable "kms_key_id" {
   default     = ""
 }
 
+variable "custom_kms_policy" {
+  type        = string
+  description = "Add additional policies for the AWS CMK Key created by this module"
+  default     = null
+}
+
 variable "tags" {
   type        = map(string)
   description = "Map of tags to assign to the resources."

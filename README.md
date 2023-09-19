@@ -30,6 +30,8 @@ The following KMS permissions are required by instance profile to decrypt sessio
  "kms:Decrypt",
  "kms:GenerateDataKey"
 ```
+## Custom AWS CMK Key Policy
+- To use additional custom policy for the kms policy created by the module specify the policy document using `custom_kms_policy` variable.
 
 ## Permissions Required by IAM USER
 In addition to having the required permissions for ssm actions, the IAM user using the session requires the following permissions
@@ -129,6 +131,7 @@ aws ssm start-session \
 | [aws_ssm_document.custom](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document) | resource |
 | [aws_ssm_document.session_preferences](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_iam_policy_document.kms_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_organizations_organization.org](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
@@ -144,6 +147,7 @@ aws ssm start-session \
 | <a name="input_content"></a> [content](#input\_content) | The JSON or YAML content of the document. | `string` | `""` | no |
 | <a name="input_create_custom_document"></a> [create\_custom\_document](#input\_create\_custom\_document) | Specify whether to create ssm document with custom settings | `bool` | `false` | no |
 | <a name="input_create_session_preferences"></a> [create\_session\_preferences](#input\_create\_session\_preferences) | Whether to create session preferences | `string` | `false` | no |
+| <a name="input_custom_kms_policy"></a> [custom\_kms\_policy](#input\_custom\_kms\_policy) | Add additional policies for the AWS CMK Key created by this module | `string` | `null` | no |
 | <a name="input_document_format"></a> [document\_format](#input\_document\_format) | The format of the document. Valid document types include: `JSON` and `YAML` | `string` | `"JSON"` | no |
 | <a name="input_document_name"></a> [document\_name](#input\_document\_name) | The name of the custom document | `string` | `null` | no |
 | <a name="input_document_type"></a> [document\_type](#input\_document\_type) | The type of the document. Valid document types include: `Automation`, `Command`, `Package`, `Policy`, and `Session` | `string` | `null` | no |

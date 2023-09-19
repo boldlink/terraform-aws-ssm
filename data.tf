@@ -47,3 +47,7 @@ data "aws_iam_policy_document" "s3" {
     }
   }
 }
+
+data "aws_iam_policy_document" "kms_policy" {
+  source_policy_documents = compact([local.kms_policy, var.custom_kms_policy])
+}
