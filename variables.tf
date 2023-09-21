@@ -153,10 +153,28 @@ variable "custom_kms_policy" {
   default     = null
 }
 
+variable "custom_s3_bucket_policy" {
+  type        = string
+  description = "Additional s3 bucket policy for the s3 bucket created by the module"
+  default     = null
+}
+
+variable "enable_key_rotation" {
+  type        = bool
+  description = "Choose whether to enable key rotation"
+  default     = true
+}
+
 variable "tags" {
   type        = map(string)
   description = "Map of tags to assign to the resources."
   default     = {}
+}
+
+variable "key_deletion_window_in_days" {
+  type        = number
+  description = "The number of days before the key is deleted"
+  default     = 7
 }
 
 variable "logs_expiration_days" {

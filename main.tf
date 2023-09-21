@@ -1,19 +1,23 @@
-module "sessionkms" {
-  count            = var.kms_key_id == "" && (var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled) ? 1 : 0
-  source           = "boldlink/kms/aws"
-  version          = "1.1.0"
-  description      = "AWS CMK for encrypting ssm session"
-  create_kms_alias = true
-  kms_policy       = data.aws_iam_policy_document.kms_policy.json
-  alias_name       = "alias/${var.name}-key-alias"
-  tags             = var.tags
+resource "aws_kms_key" "sessionkms" {
+  count                   = var.kms_key_id == "" && (var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled) ? 1 : 0
+  description             = "AWS CMK for encrypting ssm session"
+  deletion_window_in_days = var.key_deletion_window_in_days
+  enable_key_rotation     = var.enable_key_rotation
+  policy                  = data.aws_iam_policy_document.kms_policy.json
+  tags                    = var.tags
+}
+
+resource "aws_kms_alias" "sessionkms" {
+  count         = var.kms_key_id == "" && (var.encrypt_session || var.cloudwatch_encryption_enabled || var.s3_encryption_enabled) ? 1 : 0
+  name          = "alias/${var.name}"
+  target_key_id = aws_kms_key.sessionkms[0].key_id
 }
 
 resource "aws_cloudwatch_log_group" "ssm_log_group" {
   count             = var.send_logs_to_cloudwatch ? 1 : 0
   name              = "/aws/ssm/${var.name}"
   retention_in_days = var.retention_in_days
-  kms_key_id        = var.cloudwatch_encryption_enabled && var.kms_key_id == "" ? try(module.sessionkms[0].arn, null) : null
+  kms_key_id        = var.cloudwatch_encryption_enabled && var.kms_key_id == "" ? try(aws_kms_key.sessionkms[0].arn, null) : null
   tags              = var.tags
 }
 
@@ -81,8 +85,8 @@ module "session_logs_bucket" {
   bucket                 = lower(var.name)
   force_destroy          = true
   versioning_status      = "Enabled"
-  bucket_policy          = data.aws_iam_policy_document.s3.json
-  sse_kms_master_key_arn = var.encrypt_session && var.kms_key_id == "" ? try(module.sessionkms[0].arn, null) : null
+  bucket_policy          = data.aws_iam_policy_document.combined_s3_policy.json
+  sse_kms_master_key_arn = var.encrypt_session && var.kms_key_id == "" ? try(aws_kms_key.sessionkms[0].arn, null) : null
   tags                   = var.tags
 
   lifecycle_configuration = [

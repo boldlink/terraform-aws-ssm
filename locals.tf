@@ -5,7 +5,7 @@ locals {
   dns_suffix                = data.aws_partition.current.dns_suffix
   log_bucket_name           = var.send_logs_to_s3 && var.session_bucket == "" ? try(module.session_logs_bucket[0].id, "") : var.session_bucket
   cloudwatch_log_group_name = var.send_logs_to_cloudwatch ? try(aws_cloudwatch_log_group.ssm_log_group[0].name, "") : ""
-  kms_key                   = var.kms_key_id == "" && var.encrypt_session ? try(module.sessionkms[0].key_id, "") : var.kms_key_id
+  kms_key                   = var.kms_key_id == "" && var.encrypt_session ? try(aws_kms_key.sessionkms[0].key_id, "") : var.kms_key_id
   kms_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [

@@ -51,3 +51,7 @@ data "aws_iam_policy_document" "s3" {
 data "aws_iam_policy_document" "kms_policy" {
   source_policy_documents = compact([local.kms_policy, var.custom_kms_policy])
 }
+
+data "aws_iam_policy_document" "combined_s3_policy" {
+  source_policy_documents = compact([data.aws_iam_policy_document.s3.json, var.custom_s3_bucket_policy])
+}
