@@ -81,16 +81,10 @@ variable "max_session_duration" {
   default     = 720
 }
 
-variable "session_bucket" {
+variable "s3_bucket_name" {
   type        = string
   description = "The name of the bucket to send ssm session logs to"
   default     = ""
-}
-
-variable "send_logs_to_s3" {
-  type        = bool
-  description = "Whether to send session logs to s3 bucket"
-  default     = false
 }
 
 variable "s3_encryption_enabled" {
@@ -111,22 +105,10 @@ variable "cloudwatch_streaming_enabled" {
   default     = true
 }
 
-variable "send_logs_to_cloudwatch" {
-  type        = bool
-  description = "Whether to send logs to cloudwatch"
-  default     = false
-}
-
 variable "retention_in_days" {
   type        = number
   description = "Specifies the number of days you want to retain log events in the specified log group. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire."
   default     = 0
-}
-
-variable "encrypt_session" {
-  type        = bool
-  description = "Whether to encrypt the session using KMS"
-  default     = false
 }
 
 variable "linux_shell_profile" {
@@ -147,40 +129,10 @@ variable "kms_key_id" {
   default     = ""
 }
 
-variable "custom_kms_policy" {
-  type        = string
-  description = "Add additional policies for the AWS CMK Key created by this module"
-  default     = null
-}
-
-variable "custom_s3_bucket_policy" {
-  type        = string
-  description = "Additional s3 bucket policy for the s3 bucket created by the module"
-  default     = null
-}
-
-variable "enable_key_rotation" {
-  type        = bool
-  description = "Choose whether to enable key rotation"
-  default     = true
-}
-
 variable "tags" {
   type        = map(string)
   description = "Map of tags to assign to the resources."
   default     = {}
-}
-
-variable "key_deletion_window_in_days" {
-  type        = number
-  description = "The number of days before the key is deleted"
-  default     = 7
-}
-
-variable "logs_expiration_days" {
-  type        = number
-  description = "The number of days it will take for logs stored in S3 to expire"
-  default     = 30
 }
 
 variable "create_session_preferences" {

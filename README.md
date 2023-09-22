@@ -117,27 +117,16 @@ aws ssm start-session \
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_session_logs_bucket"></a> [session\_logs\_bucket](#module\_session\_logs\_bucket) | boldlink/s3/aws | 2.3.0 |
+No modules.
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [aws_cloudwatch_log_group.ssm_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_kms_alias.sessionkms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_key.sessionkms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_ssm_association.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_association) | resource |
 | [aws_ssm_document.custom](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document) | resource |
 | [aws_ssm_document.session_preferences](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.combined_s3_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.kms_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_organizations_organization.org](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
-| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
@@ -149,29 +138,21 @@ aws ssm start-session \
 | <a name="input_content"></a> [content](#input\_content) | The JSON or YAML content of the document. | `string` | `""` | no |
 | <a name="input_create_custom_document"></a> [create\_custom\_document](#input\_create\_custom\_document) | Specify whether to create ssm document with custom settings | `bool` | `false` | no |
 | <a name="input_create_session_preferences"></a> [create\_session\_preferences](#input\_create\_session\_preferences) | Whether to create session preferences | `string` | `false` | no |
-| <a name="input_custom_kms_policy"></a> [custom\_kms\_policy](#input\_custom\_kms\_policy) | Add additional policies for the AWS CMK Key created by this module | `string` | `null` | no |
-| <a name="input_custom_s3_bucket_policy"></a> [custom\_s3\_bucket\_policy](#input\_custom\_s3\_bucket\_policy) | Additional s3 bucket policy for the s3 bucket created by the module | `string` | `null` | no |
 | <a name="input_document_format"></a> [document\_format](#input\_document\_format) | The format of the document. Valid document types include: `JSON` and `YAML` | `string` | `"JSON"` | no |
 | <a name="input_document_name"></a> [document\_name](#input\_document\_name) | The name of the custom document | `string` | `null` | no |
 | <a name="input_document_type"></a> [document\_type](#input\_document\_type) | The type of the document. Valid document types include: `Automation`, `Command`, `Package`, `Policy`, and `Session` | `string` | `null` | no |
 | <a name="input_document_version"></a> [document\_version](#input\_document\_version) | The document version you want to associate with the target(s). Can be a specific version or the default version. | `string` | `null` | no |
-| <a name="input_enable_key_rotation"></a> [enable\_key\_rotation](#input\_enable\_key\_rotation) | Choose whether to enable key rotation | `bool` | `true` | no |
-| <a name="input_encrypt_session"></a> [encrypt\_session](#input\_encrypt\_session) | Whether to encrypt the session using KMS | `bool` | `false` | no |
 | <a name="input_idle_session_timeout"></a> [idle\_session\_timeout](#input\_idle\_session\_timeout) | The amount of time of inactivity you want to allow before a session ends. This input is measured in minutes. Valid values: 1-60 | `number` | `20` | no |
-| <a name="input_key_deletion_window_in_days"></a> [key\_deletion\_window\_in\_days](#input\_key\_deletion\_window\_in\_days) | The number of days before the key is deleted | `number` | `7` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | Provide a KMS Key ID for AWS CMK key not created by this module | `string` | `""` | no |
 | <a name="input_linux_shell_profile"></a> [linux\_shell\_profile](#input\_linux\_shell\_profile) | The shell preferences, environment variables, working directories, and commands you specify for sessions on Linux managed nodes. | `string` | `""` | no |
-| <a name="input_logs_expiration_days"></a> [logs\_expiration\_days](#input\_logs\_expiration\_days) | The number of days it will take for logs stored in S3 to expire | `number` | `30` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | The maximum amount of time you want to allow before a session ends. This input is measured in minutes. Valid values: 1-1440 | `number` | `720` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the stack | `string` | n/a | yes |
 | <a name="input_retention_in_days"></a> [retention\_in\_days](#input\_retention\_in\_days) | Specifies the number of days you want to retain log events in the specified log group. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0. If you select 0, the events in the log group are always retained and never expire. | `number` | `0` | no |
 | <a name="input_run_as_default_user"></a> [run\_as\_default\_user](#input\_run\_as\_default\_user) | The name of the user account to start sessions with on Linux managed nodes when the runAsEnabled input is set to true. The user account you specify for this input must exist on the managed nodes you will be connecting to; otherwise, sessions will fail to start. | `string` | `""` | no |
 | <a name="input_run_as_enabled"></a> [run\_as\_enabled](#input\_run\_as\_enabled) | If set to true, you must specify a user account that exists on the managed nodes you will be connecting to in the runAsDefaultUser input. Otherwise, sessions will fail to start. | `bool` | `false` | no |
+| <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | The name of the bucket to send ssm session logs to | `string` | `""` | no |
 | <a name="input_s3_encryption_enabled"></a> [s3\_encryption\_enabled](#input\_s3\_encryption\_enabled) | If set to true, the Amazon S3 bucket you specified in the s3BucketName input must be encrypted. | `bool` | `true` | no |
 | <a name="input_s3_key_prefix"></a> [s3\_key\_prefix](#input\_s3\_key\_prefix) | Specify S3 key prefix for the logs | `string` | `""` | no |
-| <a name="input_send_logs_to_cloudwatch"></a> [send\_logs\_to\_cloudwatch](#input\_send\_logs\_to\_cloudwatch) | Whether to send logs to cloudwatch | `bool` | `false` | no |
-| <a name="input_send_logs_to_s3"></a> [send\_logs\_to\_s3](#input\_send\_logs\_to\_s3) | Whether to send session logs to s3 bucket | `bool` | `false` | no |
-| <a name="input_session_bucket"></a> [session\_bucket](#input\_session\_bucket) | The name of the bucket to send ssm session logs to | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to the resources. | `map(string)` | `{}` | no |
 | <a name="input_targets"></a> [targets](#input\_targets) | The configuration for the targets to associate the Document with. As of this version AWS currently supports a maximum of 5 targets. | `list(any)` | `[]` | no |
 | <a name="input_windows_shell_profile"></a> [windows\_shell\_profile](#input\_windows\_shell\_profile) | The shell preferences, environment variables, working directories, and commands you specify for sessions on Windows managed nodes. | `string` | `""` | no |
@@ -181,7 +162,6 @@ aws ssm start-session \
 | Name | Description |
 |------|-------------|
 | <a name="output_document_type"></a> [document\_type](#output\_document\_type) | The type of the document |
-| <a name="output_logs_bucket_id"></a> [logs\_bucket\_id](#output\_logs\_bucket\_id) | The name of the session logs S3 bucket |
 | <a name="output_name"></a> [name](#output\_name) | The name of the session document |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

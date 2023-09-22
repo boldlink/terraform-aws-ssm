@@ -10,28 +10,10 @@ variable "create_session_preferences" {
   default     = true
 }
 
-variable "send_logs_to_s3" {
-  type        = bool
-  description = "Whether to send session logs to s3 bucket"
-  default     = true
-}
-
-variable "send_logs_to_cloudwatch" {
-  type        = bool
-  description = "Whether to send logs to cloudwatch"
-  default     = true
-}
-
 variable "linux_shell_profile" {
   type        = string
   description = "The shell preferences, environment variables, working directories, and commands you specify for sessions on Linux managed nodes."
   default     = "sudo su"
-}
-
-variable "encrypt_session" {
-  type        = bool
-  description = "Whether to encrypt the session"
-  default     = true
 }
 
 variable "logs_expiration_days" {
