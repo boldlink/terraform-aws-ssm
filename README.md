@@ -30,9 +30,6 @@ The following KMS permissions are required by instance profile to decrypt sessio
  "kms:Decrypt",
  "kms:GenerateDataKey"
 ```
-## Custom AWS CMK Key Policy
-- To use additional custom policy for the kms policy created by the module specify the policy document using `custom_kms_policy` variable.
-
 ## Permissions Required by IAM USER
 In addition to having the required permissions for ssm actions, the IAM user using the session requires the following permissions
 ```console
@@ -93,7 +90,6 @@ aws ssm start-session \
     --target "<instance_id_here>"
     --document-name "<name_of_created_session_document>"
 ```
-**Note:** The `encrypt_session` option is set to `false` by default hence the session will not be encrypted. You can turn enable it by changing the value to `true`.
 
 ## Documentation
 
