@@ -5,7 +5,13 @@ variable "name" {
 }
 
 variable "create_session_preferences" {
-  type        = string
+  type        = bool
   description = "Whether to create session preferences"
   default     = true
+}
+
+variable "linux_shell_profile" {
+  type        = string
+  description = "The shell preferences, environment variables, working directories, and commands you specify for sessions on Linux managed nodes."
+  default     = "pwd"
 }
