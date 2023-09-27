@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "s3" {
     }
 
     actions   = ["s3:GetEncryptionConfiguration"]
-    resources = ["arn:${local.partition}:s3:::${lower(var.name)}"]
+    resources = [module.session_logs_bucket.arn]
 
     condition {
       test     = "StringEquals"
@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "s3" {
       "s3:PutObject",
       "s3:PutObjectAcl"
     ]
-    resources = ["arn:${local.partition}:s3:::${lower(var.name)}/*"]
+    resources = ["${module.session_logs_bucket.arn}/*"]
 
     condition {
       test     = "StringEquals"
@@ -52,30 +52,6 @@ data "aws_iam_policy_document" "kms_policy" {
   #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
   #checkov:skip=CKV_AWS_356: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
   #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
-  statement {
-    sid    = "Allow Session Manager encrypt the session"
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey"
-    ]
-
-    resources = [
-      "*"
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "${local.partition}:PrincipalOrgID"
-      values   = [data.aws_organizations_organization.org.id]
-    }
-  }
 
   statement {
     sid    = "Allow account/org IAM users to manage kms key"

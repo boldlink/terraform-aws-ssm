@@ -1,3 +1,10 @@
+resource "random_string" "bucket" {
+  length  = 5
+  special = false
+  upper   = false
+  numeric = false
+}
+
 module "session_kms" {
   source           = "boldlink/kms/aws"
   version          = "1.1.0"
@@ -12,7 +19,7 @@ module "session_kms" {
 module "session_logs_bucket" {
   source                 = "boldlink/s3/aws"
   version                = "2.3.0"
-  bucket                 = lower(var.name)
+  bucket                 = lower(local.bucket)
   force_destroy          = true
   versioning_status      = "Enabled"
   bucket_policy          = data.aws_iam_policy_document.s3.json
