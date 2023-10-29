@@ -42,3 +42,15 @@ variable "tags" {
     LayerId            = "Example"
   }
 }
+
+variable "document_type" {
+  type        = string
+  description = "The type of the document. Valid document types include: `Automation`, `Command`, `Package`, `Policy`, and `Session`"
+  default     = "Command"
+}
+
+variable "document_format" {
+  type        = string
+  description = "The format of the document. Valid document types include: `JSON` and `YAML`"
+  default     = "YAML"
+}

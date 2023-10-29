@@ -51,4 +51,26 @@ module "complete_example_session" {
   linux_shell_profile        = var.linux_shell_profile
   s3_key_prefix              = var.s3_key_prefix
   tags                       = var.tags
+
+}
+
+## Custom session
+module "custom_session" {
+  source                 = "../../"
+  name                   = var.name
+  document_version       = "$DEFAULT"
+  association_name       = "${var.name}-custom"
+  create_custom_document = true
+  document_name          = "${var.name}-doc"
+  document_format        = var.document_format
+  document_type          = var.document_type
+  content                = local.content
+  linux_shell_profile    = var.linux_shell_profile
+  targets = [
+    {
+      key    = "tag:Environment"
+      values = ["Development"]
+    }
+  ]
+  tags = var.tags
 }

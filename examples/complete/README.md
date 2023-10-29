@@ -35,6 +35,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_complete_example_session"></a> [complete\_example\_session](#module\_complete\_example\_session) | ../../ | n/a |
+| <a name="module_custom_session"></a> [custom\_session](#module\_custom\_session) | ../../ | n/a |
 | <a name="module_session_kms"></a> [session\_kms](#module\_session\_kms) | boldlink/kms/aws | 1.1.0 |
 | <a name="module_session_logs_bucket"></a> [session\_logs\_bucket](#module\_session\_logs\_bucket) | boldlink/s3/aws | 2.3.0 |
 
@@ -55,6 +56,8 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_create_session_preferences"></a> [create\_session\_preferences](#input\_create\_session\_preferences) | Whether to create session preferences | `string` | `true` | no |
+| <a name="input_document_format"></a> [document\_format](#input\_document\_format) | The format of the document. Valid document types include: `JSON` and `YAML` | `string` | `"YAML"` | no |
+| <a name="input_document_type"></a> [document\_type](#input\_document\_type) | The type of the document. Valid document types include: `Automation`, `Command`, `Package`, `Policy`, and `Session` | `string` | `"Command"` | no |
 | <a name="input_linux_shell_profile"></a> [linux\_shell\_profile](#input\_linux\_shell\_profile) | The shell preferences, environment variables, working directories, and commands you specify for sessions on Linux managed nodes. | `string` | `"sudo su"` | no |
 | <a name="input_logs_expiration_days"></a> [logs\_expiration\_days](#input\_logs\_expiration\_days) | Number of days it takes for logs to expire in s3 bucket | `number` | `45` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the stack | `string` | `"Complete-SessionExample"` | no |
