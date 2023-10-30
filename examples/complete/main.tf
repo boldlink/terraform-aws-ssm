@@ -55,21 +55,37 @@ module "complete_example_session" {
 }
 
 ## Custom session
+module "ssm_ec2_instance" {
+  source            = "boldlink/ec2/aws"
+  version           = "2.0.1"
+  name              = "${var.name}-instance"
+  ami               = data.aws_ami.amazon_linux.id
+  instance_type     = var.instance_type
+  monitoring        = var.monitoring
+  ebs_optimized     = var.ebs_optimized
+  vpc_id            = local.vpc_id
+  availability_zone = local.azs
+  subnet_id         = local.private_subnets
+  tags              = merge({ Name = var.name }, { InstanceScheduler = true }, var.tags)
+  root_block_device = var.root_block_device
+  ec2_role_policy   = local.ec2_role_policy
+  install_ssm_agent = var.install_ssm_agent
+}
+
 module "custom_session" {
   source                 = "../../"
-  name                   = var.name
+  name                   = "${var.name}-custom-doc"
   document_version       = "$DEFAULT"
   association_name       = "${var.name}-custom"
   create_custom_document = true
-  document_name          = "${var.name}-doc"
+  document_name          = "${var.name}-custom-doc"
   document_format        = var.document_format
   document_type          = var.document_type
   content                = local.content
-  linux_shell_profile    = var.linux_shell_profile
   targets = [
     {
-      key    = "tag:Environment"
-      values = ["Development"]
+      key    = "InstanceIds"
+      values = [module.ssm_ec2_instance.id]
     }
   ]
   tags = var.tags

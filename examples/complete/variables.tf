@@ -1,7 +1,7 @@
 variable "name" {
   type        = string
   description = "The name of the stack"
-  default     = "Complete-SessionExample"
+  default     = "Complete-Example"
 }
 
 variable "create_session_preferences" {
@@ -32,7 +32,7 @@ variable "tags" {
   description = "Map of tags to assign to the resource. Note that these tags apply to the instance and not block storage devices."
   type        = map(string)
   default = {
-    Environment        = "example"
+    Environment        = "Example"
     "user::CostCenter" = "terraform-registry"
     InstanceScheduler  = true
     Department         = "DevOps"
@@ -53,4 +53,51 @@ variable "document_format" {
   type        = string
   description = "The format of the document. Valid document types include: `JSON` and `YAML`"
   default     = "YAML"
+}
+
+variable "supporting_resources_name" {
+  description = "Name of supporting resource VPC"
+  type        = string
+  default     = "terraform-aws-ssm"
+}
+
+variable "instance_type" {
+  description = "The instance type to use for the instance. Updates to this field will trigger a stop/start of the EC2 instance"
+  type        = string
+  default     = "t3.small"
+}
+
+variable "architecture" {
+  type        = string
+  description = "The architecture of the instance to launch"
+  default     = "x86_64"
+}
+
+variable "monitoring" {
+  description = "If true, the launched EC2 instance will have detailed monitoring enabled which pulls every 1m and adds additonal cost, default monitoring doesn't add costs"
+  type        = bool
+  default     = true
+}
+
+variable "ebs_optimized" {
+  description = "If true, the launched EC2 instance will be EBS-optimized"
+  type        = bool
+  default     = true
+}
+
+variable "root_block_device" {
+  description = "Configuration block to customize details about the root block device of the instance."
+  type        = list(any)
+  default = [
+    {
+      volume_size = 15
+      encrypted   = true
+    }
+  ]
+}
+
+variable "install_ssm_agent" {
+  type        = bool
+  description = "Whether to install ssm agent"
+  default     = true
 }
