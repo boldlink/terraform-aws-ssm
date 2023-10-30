@@ -35,7 +35,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ec2_vpc"></a> [ec2\_vpc](#module\_ec2\_vpc) | boldlink/vpc/aws | 3.0.4 |
+| <a name="module_ssm_vpc"></a> [ssm\_vpc](#module\_ssm\_vpc) | boldlink/vpc/aws | 3.0.4 |
 
 ## Resources
 
@@ -51,7 +51,7 @@ No resources.
 | <a name="input_enable_private_subnets"></a> [enable\_private\_subnets](#input\_enable\_private\_subnets) | Whether to enable private subnets | `bool` | `true` | no |
 | <a name="input_enable_public_subnets"></a> [enable\_public\_subnets](#input\_enable\_public\_subnets) | Whether to enable public subnets | `bool` | `true` | no |
 | <a name="input_map_public_ip_on_launch"></a> [map\_public\_ip\_on\_launch](#input\_map\_public\_ip\_on\_launch) | (Optional) Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is `false`. | `bool` | `true` | no |
-| <a name="input_name"></a> [name](#input\_name) | Input the name of stack | `string` | `"terraform-aws-ec2"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Input the name of stack | `string` | `"terraform-aws-ssm"` | no |
 | <a name="input_nat"></a> [nat](#input\_nat) | Choose `single` or `multi` for NATs | `string` | `"single"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to the resource. | `map(string)` | <pre>{<br>  "Department": "DevOps",<br>  "Environment": "example",<br>  "LayerId": "Example",<br>  "LayerName": "Example",<br>  "Owner": "Boldlink",<br>  "Project": "Examples",<br>  "user::CostCenter": "terraform-registry"<br>}</pre> | no |
 
