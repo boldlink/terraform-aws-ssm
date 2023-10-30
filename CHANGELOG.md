@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1] - 2023-10-30
 - fix: logs not showing on s3 bucket created by module
 - added custom ssm document in complete example
+- added an ec2 instance to show how to set targets and use custom documents
 - added a target in complete example
 - added VPC as a supporting resource
 
