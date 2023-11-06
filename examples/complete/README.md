@@ -13,7 +13,6 @@
 
 # Terraform  module example of complete and most common configuration
 
-**NOTE** Terraform version 0.14.11
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
