@@ -13,7 +13,7 @@
 
 # Terraform  module example of complete and most common configuration
 
-**NOTE** Terraform version 0.14.11 
+**NOTE** Terraform version 0.14.11
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -36,9 +36,10 @@
 |------|--------|---------|
 | <a name="module_complete_example_session"></a> [complete\_example\_session](#module\_complete\_example\_session) | ../../ | n/a |
 | <a name="module_custom_session"></a> [custom\_session](#module\_custom\_session) | ../../ | n/a |
+| <a name="module_ec2_policy"></a> [ec2\_policy](#module\_ec2\_policy) | boldlink/iam-policy/aws | 1.1.0 |
 | <a name="module_session_kms"></a> [session\_kms](#module\_session\_kms) | boldlink/kms/aws | 1.1.0 |
 | <a name="module_session_logs_bucket"></a> [session\_logs\_bucket](#module\_session\_logs\_bucket) | boldlink/s3/aws | 2.3.0 |
-| <a name="module_ssm_ec2_instance"></a> [ssm\_ec2\_instance](#module\_ssm\_ec2\_instance) | boldlink/ec2/aws | 2.0.1 |
+| <a name="module_ssm_ec2_instance"></a> [ssm\_ec2\_instance](#module\_ssm\_ec2\_instance) | boldlink/ec2/aws | 2.0.3 |
 
 ## Resources
 
@@ -81,9 +82,7 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_document_type"></a> [document\_type](#output\_document\_type) | The document type |
-| <a name="output_document_type2"></a> [document\_type2](#output\_document\_type2) | The document type |
 | <a name="output_name"></a> [name](#output\_name) | Name of the session document |
-| <a name="output_name2"></a> [name2](#output\_name2) | Name of the session document |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Third party software

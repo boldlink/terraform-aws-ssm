@@ -103,7 +103,7 @@ module "ssm_ec2_instance" {
   tags              = merge({ Name = var.name }, { InstanceScheduler = true }, var.tags)
   root_block_device = var.root_block_device
   install_ssm_agent = var.install_ssm_agent
-    security_group_egress = [
+  security_group_egress = [
     {
       from_port   = 0
       to_port     = 0
@@ -129,6 +129,6 @@ module "custom_session" {
       values = [module.ssm_ec2_instance.id]
     }
   ]
-  tags = var.tags
-  depends_on = [ module.ssm_ec2_instance ]
+  tags       = var.tags
+  depends_on = [module.ssm_ec2_instance]
 }
