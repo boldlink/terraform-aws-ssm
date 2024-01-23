@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Show in complete example the usage of run commands
 - feat: Add more systems manager feature like `Patch Manager`, `Maintenance Window` among others
 
+## [1.0.2] - 2024-01-23
+- fix: remove aws provider version locks.
+
 ## [1.0.1] - 2023-10-30
 - fix: logs not showing on s3 bucket created by module
 - added custom ssm document in complete example
@@ -31,8 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial commit
 - Added files from template repository
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ssm/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ssm/compare/1.0.2...HEAD
 
+[1.0.2]: https://github.com/boldlink/terraform-aws-ssm/releases/tag/1.0.2
 [1.0.1]: https://github.com/boldlink/terraform-aws-ssm/releases/tag/1.0.1
 [1.0.0]: https://github.com/boldlink/terraform-aws-ssm/releases/tag/1.0.0
 [0.1.0]: https://github.com/boldlink/terraform-aws-ssm/releases/tag/0.1.0
