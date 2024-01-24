@@ -19,15 +19,15 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0, <= 5.15.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.15.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.15.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.5.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.33.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 
 ## Modules
 
@@ -97,4 +97,4 @@ This repository uses third party software:
   * Install with `brew install tflint`
   * Manually use via pre-commit
 
-#### BOLDLink-SIG 2022
+#### BOLDLink-SIG 2024
